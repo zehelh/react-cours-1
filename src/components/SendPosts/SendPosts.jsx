@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const SendPosts = () => {
 
     const [author, setAuthor] = useState();
     const [message, setMessage] = useState();
+    let navigate = useNavigate();
 
     const onClickPost = () => {
         createPostFetchRequest()
@@ -30,6 +32,7 @@ const SendPosts = () => {
             } else {
                 console.log(response)
             }
+            navigate('/post/' + response._id)
         })
     }
 

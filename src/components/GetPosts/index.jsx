@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DeletePosts from '../DeletePosts/DeletePosts';
+import { useNavigate } from "react-router-dom";
 
 const GetPosts = () => {
 
     const [postsData, setPostsData] = useState();
     const [loaded, setLoaded] = useState(false)
+
+    // For refresh after updating components
+    let url = window.location.href.split('?')
+    let navigate = useNavigate();
 
     const getPostsData = async () => {
         const response = await fetch('http://localhost:5500/posts')
@@ -15,6 +20,12 @@ const GetPosts = () => {
             setLoaded(true)
     };
 
+
+    // Quand on redirige avec le param, on redirige a nouveau pour le retirer (rediriger sur la meme page ne fais pas refresh le components)
+    if(url[url.length -1] === 'redirected') {
+        getPostsData()
+        navigate('/posts/')
+    }
 
     useEffect(() => {
         getPostsData()

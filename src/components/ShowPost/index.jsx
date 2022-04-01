@@ -1,18 +1,22 @@
 import DeletePosts from '../DeletePosts/DeletePosts';
 import UpdatedPosts from '../UpdatedPosts/UpdatedPosts';
-import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 
 const ShowPost = () => {
 
     const [postData, setPostData] = useState();
-    const [loaded, setLoaded] = useState(false)
-    const location = useParams();
+    const [loaded, setLoaded] = useState(false);
+
+    // For refresh after updating components
+    let url = window.location.href.split('?')
+    let location = useParams();
+    let navigate = useNavigate();
     
     const getPostData = async () => {
-        
         const response = await 
         fetch(`http://localhost:5500/posts/${location.id}`)
             .then((response) => response.json());
@@ -20,6 +24,12 @@ const ShowPost = () => {
             setPostData(response)
             setLoaded(true)
     };
+
+    // Quand on redirige avec le param, on redirige a nouveau pour le retirer (rediriger sur la meme page ne fais pas refresh le components)
+    if(url[url.length -1] === 'redirected') {
+        getPostData()
+        navigate('/post/' + location.id)
+    }
 
 
     useEffect(() => {

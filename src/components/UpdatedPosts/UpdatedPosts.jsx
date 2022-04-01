@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const UpdatedPosts = ({ idData, authorData, messageData }) => {
 
     const [author, setAuthor] = useState();
     const [message, setMessage] = useState();
+    let navigate = useNavigate();
 
     const onClickPost = () => {
         updatePostFetchRequest()
@@ -31,6 +33,8 @@ const UpdatedPosts = ({ idData, authorData, messageData }) => {
                 console.log(response)
             }
         })
+        // Trigger la rediction pour refresh
+        navigate('/post/' + idData + '?redirected')
     }
 
     const handlePost = (e) => {
@@ -44,7 +48,7 @@ const UpdatedPosts = ({ idData, authorData, messageData }) => {
         <div key={idData}>
             <form action="">
                 <label htmlFor="author" className='form-label'>Author</label>
-                <input type="text" placeholder={authorData} onChange={(e) => setAuthor(e.target.value)} className='form-control'/>
+                <input type="text" placeholder={authorData} onChange={(e) => setAuthor(e.target.value)} className='form-control' onKeyDown={(e) => handlePost(e.key)}/>
                 <br />
                 <label htmlFor="message" className='form-label'>Message</label>
                 <input type="text" placeholder={messageData} onChange={(e) => setMessage(e.target.value)} className='form-control' onKeyDown={(e) => handlePost(e.key)} />

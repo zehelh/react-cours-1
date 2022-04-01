@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const DeletePosts = ({idData}) => {
 
+    let navigate = useNavigate();
     const deletePostFetchRequest = () => {
         fetch(`http://localhost:5500/posts/${idData}`, {
           method: 'DELETE',
@@ -17,6 +19,7 @@ const DeletePosts = ({idData}) => {
                 console.log(response)
             }
         })
+        navigate('/posts?redirected')
     }
 
 
